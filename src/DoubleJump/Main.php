@@ -11,6 +11,8 @@ use pocketmine\event\player\PlayerToggleFlightEvent;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
+use pocketmine\player\GameMode;
+use pocketmine\player\Player;
 
 class Main extends PluginBase implements Listener {
     
@@ -22,6 +24,7 @@ class Main extends PluginBase implements Listener {
 
     public function onLogin(PlayerLoginEvent $event) {
         $player = $event->getPlayer();
+  
         $this->jump[$player->getName()] = 0;
     }
 
@@ -33,6 +36,7 @@ class Main extends PluginBase implements Listener {
     }
 
     public function onJump(PlayerJumpEvent $event) {
+        if ($event->getPlayer()->getGamemode() === GameMode::CREATIVE()) return;
         $player = $event->getPlayer();
         $this->jump[$player->getName()]++;  
         if ($this->jump[$player->getName()] == 1)  {
@@ -45,7 +49,7 @@ class Main extends PluginBase implements Listener {
     }
 
     public function onToggle(PlayerToggleFlightEvent $event) {
-        if ($this->jump[$event->getPlayer()->getName()] <= 0) return
+        if ($event->getPlayer()->getGamemode() === GameMode::CREATIVE()) return;
         $player = $event->getPlayer();
         # Configurable, recommended: 0.4 - 0.6
         $jumpHeight = 0.4;
