@@ -45,6 +45,7 @@ class Main extends PluginBase implements Listener {
     }
 
     public function onToggle(PlayerToggleFlightEvent $event) {
+        if ($this->jump[$event->getPlayer()->getName()] =< 0) return
         $player = $event->getPlayer();
         # Configurable, recommended: 0.4 - 0.6
         $jumpHeight = 0.4;
